@@ -1,5 +1,7 @@
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout/Layout'
+import ProtectedRoute from './components/Auth/ProtectedRoute'
+import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
 import DataStoragePage from './pages/DataStoragePage'
 import DataProcessingPage from './pages/DataProcessingPage'
@@ -19,7 +21,8 @@ export default function App() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="data-storage" element={<DataStoragePage />} />

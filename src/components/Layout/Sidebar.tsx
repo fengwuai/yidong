@@ -4,6 +4,7 @@ import {
   AlertTriangle, Shield, Bell, GitBranch, Wind, ChevronRight,
   HardDrive, RefreshCw, Grid3x3, Truck,
 } from 'lucide-react'
+import { useAuthStore } from '../../store/authStore'
 
 const navGroups = [
   {
@@ -48,6 +49,8 @@ const navGroups = [
 ]
 
 export default function Sidebar() {
+  const username = useAuthStore((s) => s.username)
+
   return (
     <aside className="fixed left-0 top-0 h-screen w-60 flex flex-col" style={{ background: '#001529' }}>
       <div className="flex items-center gap-3 px-5 py-5 border-b border-white/10">
@@ -87,7 +90,7 @@ export default function Sidebar() {
             <Shield size={12} className="text-white" />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-white/80 text-xs font-medium truncate">企业版账户</div>
+            <div className="text-white/80 text-xs font-medium truncate">{username || '企业版账户'}</div>
             <div className="text-white/40 text-xs truncate">等保三级 · 已授权</div>
           </div>
         </div>

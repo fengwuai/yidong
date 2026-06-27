@@ -1,12 +1,16 @@
 import { useState } from 'react'
-import { Key, User, Bell, Shield, Copy, Check, Eye, EyeOff, ScrollText } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Key, User, Bell, Shield, Copy, Check, Eye, EyeOff, ScrollText, LogOut } from 'lucide-react'
 import Header from '../components/Layout/Header'
 import { useWeatherStore } from '../store/weatherStore'
+import { useAuthStore } from '../store/authStore'
 import { MOCK_AUDIT_LOGS } from '../data/mockData'
 import { USER_ROLE_LABELS } from '../data/constants'
 
 export default function SettingsPage() {
+  const navigate = useNavigate()
   const { userToken, setUserToken } = useWeatherStore()
+  const { username, logout } = useAuthStore()
   const [copied, setCopied] = useState(false)
   const [showToken, setShowToken] = useState(false)
   const [editToken, setEditToken] = useState(userToken)
@@ -22,6 +26,11 @@ export default function SettingsPage() {
     setUserToken(editToken)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
+  }
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login', { replace: true })
   }
 
   const maskedToken = userToken.slice(0, 8) + '•'.repeat(Math.max(0, userToken.length - 12)) + userToken.slice(-4)
@@ -41,7 +50,7 @@ export default function SettingsPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="form-label">用户名</label>
-                  <input className="form-input bg-gray-50" value="enterprise_user_001" readOnly />
+                  <input className="form-input bg-gray-50" value={username || 'enterprise_user_001'} readOnly />
                 </div>
                 <div>
                   <label className="form-label">账户类型</label>
@@ -63,6 +72,10 @@ export default function SettingsPage() {
                   </div>
                 </div>
               </div>
+              <button onClick={handleLogout} className="btn-secondary text-red-600 border-red-200 hover:bg-red-50">
+                <LogOut size={14} />
+                退出登录
+              </button>
             </div>
           </div>
 
